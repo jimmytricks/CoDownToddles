@@ -7,8 +7,12 @@ Events viewer for children's activities around County Down, Northern Ireland.
 - Day-by-day navigation
 - UK timezone (Europe/London) with automatic BST/GMT handling
 - Toggle between toddler and adult events
-- Card or timeline view
+- Three view modes: Cards, Day Timeline, Week Timeline
+- Day timeline shows only current hour onwards (filters past times)
+- Events stack horizontally in day view - tap to expand details
 - Live open/closed status
+- Psychedelic In the Night Garden themed design
+- Floating animated characters (Makka Pakka-inspired, Tittifers, butterflies)
 - Mobile responsive
 - Preferences saved in browser
 
@@ -49,6 +53,7 @@ Toddler Events:
 
 Adult Events:
 - Newry Health Suite
+- General Swimming
 
 ## Tech
 
