@@ -1,860 +1,1454 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Co Down Toddler Events</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --toddler-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --toddler-accent: #f093fb;
-      --adult-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-      --adult-accent: #43e97b;
-      --open-color: #10b981;
-      --closed-color: #ef4444;
-      --bg-light: #fef3f9;
-      --text-dark: #1f2937;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-
-    body {
-      font-family: 'Fredoka', sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.6;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: #000;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-      z-index: 100;
-    }
-
-    .skip-link:focus {
-      top: 0;
-    }
-
-    .container {
-      max-width: 60rem;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      color: white;
-      border-radius: 0 0 2rem 2rem;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 2rem;
-    }
-
-    h1 {
-      font-size: clamp(1.75rem, 5vw, 2.5rem);
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      opacity: 0.95;
-      font-weight: 400;
-    }
-
-    /* Filter Toggle */
-    .filter-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      padding: 1rem;
-      background: white;
-      border-radius: 1rem;
-      box-shadow: var(--shadow);
-    }
-
-    .filter-label {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      transition: 0.3s;
-      border-radius: 34px;
-      border: 3px solid transparent;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 24px;
-      width: 24px;
-      left: 3px;
-      bottom: 2px;
-      background-color: white;
-      transition: 0.3s;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    input:focus-visible + .slider {
-      outline: 3px solid #667eea;
-      outline-offset: 2px;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    .filter-mode {
-      font-weight: 600;
-      min-width: 120px;
-      text-align: center;
-      font-size: 1.1rem;
-    }
-
-    /* Date Navigation */
-    .date-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: var(--shadow);
-    }
-
-    .current-date {
-      font-size: 1.5rem;
-      font-weight: 700;
-      text-align: center;
-      color: #667eea;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    button {
-      font-family: 'Fredoka', sans-serif;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-height: 44px;
-      min-width: 44px;
-      box-shadow: var(--shadow);
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    button:focus-visible {
-      outline: 3px solid #667eea;
-      outline-offset: 2px;
-    }
-
-    .btn-prev, .btn-next {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      flex: 1;
-      max-width: 150px;
-    }
-
-    .btn-today {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      color: white;
-      padding: 0.75rem 2rem;
-    }
-
-    .btn-today.is-today {
-      background: #e5e7eb;
-      color: #6b7280;
-      cursor: default;
-    }
-
-    .btn-today.is-today:hover {
-      transform: none;
-      box-shadow: var(--shadow);
-    }
-
-    /* Events Grid */
-    .events-container {
-      display: grid;
-      gap: 1.25rem;
-      margin-bottom: 2rem;
-    }
-
-    @media (min-width: 40rem) {
-      .events-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      }
-    }
-
-    .event-card {
-      background: white;
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-      border: 3px solid transparent;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .event-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .event-card.toddler {
-      border-color: #f093fb;
-    }
-
-    .event-card.adult {
-      border-color: #43e97b;
-    }
-
-    .event-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-    }
-
-    .event-card.toddler::before {
-      background: var(--toddler-bg);
-    }
-
-    .event-card.adult::before {
-      background: var(--adult-bg);
-    }
-
-    .event-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .event-name {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      flex: 1;
-    }
-
-    .category-badge {
-      padding: 0.35rem 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .category-badge.toddler {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      color: white;
-    }
-
-    .category-badge.adult {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-      color: #1f2937;
-    }
-
-    .badge-icon {
-      font-size: 1rem;
-    }
-
-    .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-    }
-
-    .status-indicator.open {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .status-indicator.closed {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    .status-indicator.open .status-dot {
-      background: var(--open-color);
-    }
-
-    .status-indicator.closed .status-dot {
-      background: var(--closed-color);
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .time-slots {
-      margin-bottom: 1.25rem;
-    }
-
-    .time-slot {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 0;
-      font-size: 1.05rem;
-      color: #4b5563;
-    }
-
-    .time-icon {
-      font-size: 1.1rem;
-    }
-
-    .closed-message {
-      color: #6b7280;
-      font-style: italic;
-      padding: 1rem;
-      background: #f3f4f6;
-      border-radius: 0.5rem;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .event-link {
-      display: block;
-      text-align: center;
-      padding: 0.85rem 1.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 0.75rem;
-      font-weight: 600;
-      transition: all 0.2s;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .event-link:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .event-link:focus-visible {
-      outline: 3px solid #667eea;
-      outline-offset: 2px;
-    }
-
-    .link-icon {
-      font-size: 1.1rem;
-    }
-
-    .no-events {
-      text-align: center;
-      padding: 3rem 1.5rem;
-      background: white;
-      border-radius: 1rem;
-      box-shadow: var(--shadow);
-    }
-
-    .no-events-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-
-    .no-events-text {
-      font-size: 1.25rem;
-      color: #6b7280;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: #6b7280;
-      font-size: 0.9rem;
-    }
-
-    /* Accessibility - Reduced Motion */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    /* Ensure readability at 320px */
-    @media (max-width: 20rem) {
-      .container {
-        padding: 0.5rem;
-      }
-      
-      h1 {
-        font-size: 1.5rem;
-      }
-      
-      .event-card {
-        padding: 1rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Co Down Toddler Events</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --toddler-bg: linear-gradient(135deg, #ffa3d7 0%, #c490e4 100%);
+            --toddler-accent: #ffd1e3;
+            --adult-bg: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
+            --adult-accent: #b8f3d8;
+            --open-color: #10b981;
+            --closed-color: #f472b6;
+            --bg-light: linear-gradient(180deg, #e3f2ff 0%, #fce7f3 50%, #e9d5ff 100%);
+            --bg-gradient: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 50%, #f3e8ff 100%);
+            --text-dark: #1f2937;
+            --dream-blue: #93c5fd;
+            --dream-pink: #f9a8d4;
+            --dream-purple: #c4b5fd;
+            --dream-green: #86efac;
+            --dream-yellow: #fde047;
+            --shadow: 0 8px 16px -4px rgba(139, 92, 246, 0.15), 0 4px 8px -2px rgba(236, 72, 153, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(139, 92, 246, 0.2), 0 10px 10px -5px rgba(236, 72, 153, 0.15);
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            background-attachment: fixed;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .container {
+            max-width: 60rem;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 50%, #fbbf24 100%);
+            color: white;
+            border-radius: 0 0 3rem 3rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            animation: dreamFloat 20s infinite ease-in-out;
+        }
+
+        @keyframes dreamFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10%, 10%) scale(1.1); }
+        }
+
+        h1 {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Filter Toggle */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(196, 181, 253, 0.3);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #8b5cf6;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ffa3d7 0%, #c490e4 100%);
+            transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 34px;
+            border: 3px solid rgba(196, 181, 253, 0.4);
+            box-shadow: inset 0 2px 8px rgba(139, 92, 246, 0.2);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 2px;
+            bottom: 1px;
+            background: linear-gradient(135deg, #fff 0%, #fce7f3 100%);
+            transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(139, 92, 246, 0.3);
+        }
+
+        input:checked+.slider {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
+            border-color: rgba(134, 239, 172, 0.4);
+        }
+
+        input:focus-visible+.slider {
+            outline: 3px solid #c4b5fd;
+            outline-offset: 2px;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .filter-mode {
+            font-weight: 600;
+            min-width: 120px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #8b5cf6;
+        }
+
+        /* View Mode Selector */
+        .view-selector {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            font-family: 'Fredoka', sans-serif;
+            padding: 0.75rem 1.5rem;
+            border: 3px solid rgba(196, 181, 253, 0.4);
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: rgba(255, 255, 255, 0.8);
+            color: #8b5cf6;
+            min-height: 48px;
+            backdrop-filter: blur(5px);
+        }
+
+        .view-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+            color: white;
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .view-btn:focus-visible {
+            outline: 3px solid #c4b5fd;
+            outline-offset: 2px;
+        }
+
+        /* Date Navigation */
+        .date-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem 1.5rem;
+            border-radius: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(249, 168, 212, 0.3);
+        }
+
+        .current-date {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-family: 'Fredoka', sans-serif;
+            padding: 0.85rem 2rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 48px;
+            min-width: 48px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        button:focus-visible {
+            outline: 3px solid #c4b5fd;
+            outline-offset: 3px;
+        }
+
+        .btn-prev,
+        .btn-next {
+            background: linear-gradient(135deg, #c4b5fd 0%, #ddd6fe 100%);
+            color: #5b21b6;
+            flex: 1;
+            max-width: 160px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-today {
+            background: linear-gradient(135deg, #f9a8d4 0%, #fbcfe8 100%);
+            color: #be185d;
+            padding: 0.85rem 2.5rem;
+            border: 3px solid rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-today.is-today {
+            background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            color: #6b7280;
+            cursor: default;
+            border-color: rgba(147, 197, 253, 0.3);
+        }
+
+        .btn-today.is-today:hover {
+            transform: none;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-today.is-today::before {
+            display: none;
+        }
+
+        /* Events Grid */
+        .events-container {
+            display: grid;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 40rem) {
+            .events-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .event-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(196, 181, 253, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px) rotate(-1deg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-card.toddler {
+            border-color: rgba(255, 163, 215, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 231, 243, 0.7) 100%);
+        }
+
+        .event-card.adult {
+            border-color: rgba(168, 230, 207, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 252, 231, 0.7) 100%);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            border-radius: 2rem 2rem 0 0;
+        }
+
+        .event-card.toddler::before {
+            background: var(--toddler-bg);
+        }
+
+        .event-card.adult::before {
+            background: var(--adult-bg);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex: 1;
+        }
+
+        .category-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: var(--shadow);
+            border: 2px solid;
+        }
+
+        .category-badge.toddler {
+            background: linear-gradient(135deg, #ffa3d7 0%, #c490e4 100%);
+            color: white;
+            border-color: rgba(196, 144, 228, 0.4);
+        }
+
+        .category-badge.adult {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
+            color: #065f46;
+            border-color: rgba(134, 239, 172, 0.4);
+        }
+
+        .badge-icon {
+            font-size: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+            border: 2px solid;
+        }
+
+        .status-indicator.open {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border-color: rgba(134, 239, 172, 0.4);
+        }
+
+        .status-indicator.closed {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            color: #9f1239;
+            border-color: rgba(244, 114, 182, 0.4);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.open .status-dot {
+            background: var(--open-color);
+        }
+
+        .status-indicator.closed .status-dot {
+            background: var(--closed-color);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .time-slots {
+            margin-bottom: 1.25rem;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0;
+            font-size: 1.05rem;
+            color: #4b5563;
+        }
+
+        .time-icon {
+            font-size: 1.1rem;
+        }
+
+        .closed-message {
+            color: #8b5cf6;
+            font-style: italic;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            border-radius: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(196, 181, 253, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-link {
+            display: flex;
+            text-align: center;
+            padding: 1rem 1.75rem;
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 2rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            min-height: 48px;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            position: relative;
+            z-index: 1;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            box-shadow: var(--shadow);
+        }
+
+        .event-link:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-link:focus-visible {
+            outline: 3px solid #c4b5fd;
+            outline-offset: 3px;
+        }
+
+        .link-icon {
+            font-size: 1.1rem;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+            box-shadow: var(--shadow);
+            border: 3px solid rgba(196, 181, 253, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .no-events-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: grayscale(0.3);
+        }
+
+        .no-events-text {
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Timeline View */
+        .timeline-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+            padding: 2.5rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            border: 3px solid rgba(196, 181, 253, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, #c4b5fd 0%, #f9a8d4 50%, #fde047 100%);
+            border-radius: 6px;
+            box-shadow: 0 0 20px rgba(196, 181, 253, 0.5);
+        }
+
+        .timeline-hour {
+            position: relative;
+            padding-left: 140px;
+            min-height: 70px;
+            margin-bottom: 1rem;
+        }
+
+        .hour-label {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 90px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: right;
+            text-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+        }
+
+        .hour-marker {
+            position: absolute;
+            left: 50px;
+            top: 8px;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #fae8ff 0%, #fff 100%);
+            border: 5px solid #c4b5fd;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4), inset 0 2px 4px rgba(196, 181, 253, 0.3);
+        }
+
+        .timeline-events {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .timeline-event {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 231, 243, 0.8) 100%);
+            padding: 1.25rem 1.5rem;
+            border-radius: 1.5rem;
+            border: 3px solid;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+        }
+
+        .timeline-event.toddler {
+            border-color: rgba(255, 163, 215, 0.6);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(252, 231, 243, 0.8) 100%);
+        }
+
+        .timeline-event.adult {
+            border-color: rgba(168, 230, 207, 0.6);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 252, 231, 0.8) 100%);
+        }
+
+        .timeline-event:hover {
+            transform: translateX(8px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .timeline-event-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+        }
+
+        .timeline-event-time {
+            font-size: 1rem;
+            color: #8b5cf6;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .timeline-event-category {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.35rem;
+            border: 2px solid;
+        }
+
+        .timeline-event-category.toddler {
+            background: linear-gradient(135deg, #ffa3d7 0%, #c490e4 100%);
+            color: white;
+            border-color: rgba(196, 144, 228, 0.4);
+        }
+
+        .timeline-event-category.adult {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
+            color: #065f46;
+            border-color: rgba(134, 239, 172, 0.4);
+        }
+
+        .no-timeline-events {
+            text-align: center;
+            color: #c4b5fd;
+            font-style: italic;
+            padding: 2rem 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Week Timeline View */
+        .week-timeline-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2rem;
+            padding: 2rem 1rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            border: 3px solid rgba(196, 181, 253, 0.3);
+            backdrop-filter: blur(10px);
+            overflow-x: auto;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            min-width: 900px;
+        }
+
+        .week-day-column {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            border: 3px solid;
+            min-height: 400px;
+        }
+
+        .week-day-column.toddler {
+            border-color: rgba(255, 163, 215, 0.4);
+            background: linear-gradient(180deg, rgba(252, 231, 243, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+        }
+
+        .week-day-column.adult {
+            border-color: rgba(168, 230, 207, 0.4);
+            background: linear-gradient(180deg, rgba(220, 252, 231, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+        }
+
+        .week-day-header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(196, 181, 253, 0.3);
+            padding-bottom: 0.75rem;
+        }
+
+        .week-day-header.today {
+            background: linear-gradient(135deg, #f9a8d4 0%, #fde047 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .week-day-header.today::after {
+            content: '⭐';
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .week-event-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 0.85rem;
+            margin-bottom: 0.75rem;
+            border: 2px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+        }
+
+        .week-event-item.toddler {
+            border-color: rgba(255, 163, 215, 0.5);
+        }
+
+        .week-event-item.adult {
+            border-color: rgba(168, 230, 207, 0.5);
+        }
+
+        .week-event-item:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow);
+        }
+
+        .week-event-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .week-event-time {
+            font-size: 0.8rem;
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+        .week-no-events {
+            text-align: center;
+            color: #c4b5fd;
+            font-style: italic;
+            padding: 2rem 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .hour-marker {
+                left: 22px;
+            }
+
+            .timeline-hour {
+                padding-left: 80px;
+            }
+
+            .hour-label {
+                width: 60px;
+                font-size: 1rem;
+            }
+
+            .week-grid {
+                grid-template-columns: repeat(7, 280px);
+            }
+        }
+
+        /* Accessibility - Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Ensure readability at 320px */
+        @media (max-width: 20rem) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .event-card {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <div id="app">
-    <header>
-      <h1>🎈 Co Down Toddler Events</h1>
-      <p class="subtitle">Your guide to fun activities around County Down</p>
-    </header>
+    <div id="app">
+        <header>
+            <h1>🎈 Co Down Toddler Events</h1>
+            <p class="subtitle">Your guide to fun activities around County Down</p>
+        </header>
 
-    <div class="container">
-      <!-- Filter Toggle -->
-      <section class="filter-section" aria-label="Event filter">
-        <span class="filter-label">Filter:</span>
-        <label class="toggle-switch">
-          <input 
-            type="checkbox" 
-            v-model="showAllEvents"
-            aria-label="Toggle between toddler events and all events"
-          >
-          <span class="slider"></span>
-        </label>
-        <span class="filter-mode">{{ showAllEvents ? '🌟 All Events' : '👶 Toddler Events' }}</span>
-      </section>
+        <div class="container">
+            <!-- Filter Toggles -->
+            <section class="filter-section" aria-label="Event filter">
+                <span class="filter-label">Category:</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" v-model="showAdultEvents"
+                        aria-label="Toggle between toddler and adult events">
+                    <span class="slider"></span>
+                </label>
+                <span class="filter-mode">{{ showAdultEvents ? '👨‍👩‍👧 Adult' : '👶 Toddler' }}</span>
+            </section>
 
-      <!-- Date Navigation -->
-      <nav class="date-nav" aria-label="Date navigation">
-        <div class="current-date" role="status" aria-live="polite">
-          {{ formattedDate }}
-        </div>
-        <div class="nav-buttons">
-          <button 
-            @click="previousDay" 
-            class="btn-prev"
-            aria-label="Previous day"
-          >
-            ← Previous
-          </button>
-          <button 
-            @click="goToToday" 
-            class="btn-today"
-            :class="{ 'is-today': isToday }"
-            :disabled="isToday"
-            aria-label="Go to today"
-          >
-            {{ isToday ? "Today" : "📍 Today" }}
-          </button>
-          <button 
-            @click="nextDay" 
-            class="btn-next"
-            aria-label="Next day"
-          >
-            Next →
-          </button>
-        </div>
-      </nav>
-
-      <!-- Events List -->
-      <main id="main-content">
-        <div v-if="filteredEvents.length > 0" class="events-container">
-          <article 
-            v-for="event in filteredEvents" 
-            :key="event.name"
-            class="event-card"
-            :class="event.category"
-          >
-            <div class="event-header">
-              <h2 class="event-name">{{ event.name }}</h2>
-              <span class="category-badge" :class="event.category">
-                <span class="badge-icon" aria-hidden="true">{{ event.category === 'toddler' ? '👶' : '👨‍👩‍👧' }}</span>
-                <span>{{ event.category === 'toddler' ? 'Toddler' : 'Adult' }}</span>
-              </span>
-            </div>
-
-            <div v-if="event.todaySchedule">
-              <div 
-                class="status-indicator"
-                :class="isOpenNow(event) ? 'open' : 'closed'"
-                role="status"
-              >
-                <span class="status-dot" aria-hidden="true"></span>
-                {{ isOpenNow(event) ? 'Open Now' : 'Closed Now' }}
-              </div>
-
-              <div class="time-slots">
-                <div 
-                  v-for="(slot, index) in event.todaySchedule" 
-                  :key="index"
-                  class="time-slot"
-                >
-                  <span class="time-icon" aria-hidden="true">🕐</span>
-                  <span>{{ slot.start }} - {{ slot.end }}</span>
+            <section class="filter-section" aria-label="View mode">
+                <span class="filter-label">View:</span>
+                <div class="view-selector">
+                    <button 
+                        @click="viewMode = 'cards'" 
+                        :class="['view-btn', { active: viewMode === 'cards' }]"
+                        aria-label="Card view"
+                    >
+                        📋 Cards
+                    </button>
+                    <button 
+                        @click="viewMode = 'day'" 
+                        :class="['view-btn', { active: viewMode === 'day' }]"
+                        aria-label="Day timeline view"
+                    >
+                        🕐 Day
+                    </button>
+                    <button 
+                        @click="viewMode = 'week'" 
+                        :class="['view-btn', { active: viewMode === 'week' }]"
+                        aria-label="Week timeline view"
+                    >
+                        📅 Week
+                    </button>
                 </div>
-              </div>
-            </div>
+            </section>
 
-            <div v-else class="closed-message">
-              Closed {{ dayName }}
-            </div>
+            <!-- Date Navigation -->
+            <nav class="date-nav" aria-label="Date navigation">
+                <div class="current-date" role="status" aria-live="polite">
+                    {{ formattedDate }}
+                </div>
+                <div class="nav-buttons">
+                    <button @click="previousDay" class="btn-prev" aria-label="Previous day">
+                        ← Previous
+                    </button>
+                    <button @click="goToToday" class="btn-today" :class="{ 'is-today': isToday }" :disabled="isToday"
+                        aria-label="Go to today">
+                        {{ isToday ? "Today" : "📍 Today" }}
+                    </button>
+                    <button @click="nextDay" class="btn-next" aria-label="Next day">
+                        Next →
+                    </button>
+                </div>
+            </nav>
 
-            <a 
-              :href="event.url || '#'" 
-              class="event-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              :aria-label="'Visit ' + event.name + ' website'"
-            >
-              <span>{{ event.url ? 'Book / View Info' : 'Link Coming Soon' }}</span>
-              <span class="link-icon" aria-hidden="true">→</span>
-            </a>
-          </article>
+            <!-- Events List -->
+            <main id="main-content">
+                <!-- Card View -->
+                <div v-if="viewMode === 'cards'">
+                    <div v-if="filteredEvents.length > 0" class="events-container">
+                        <article v-for="event in filteredEvents" :key="event.name" class="event-card"
+                            :class="event.category">
+                            <div class="event-header">
+                                <h2 class="event-name">{{ event.name }}</h2>
+                                <span class="category-badge" :class="event.category">
+                                    <span class="badge-icon" aria-hidden="true">{{ event.category === 'toddler' ? '👶' :
+                                        '👨‍👩‍👧' }}</span>
+                                    <span>{{ event.category === 'toddler' ? 'Toddler' : 'Adult' }}</span>
+                                </span>
+                            </div>
+
+                            <div v-if="event.todaySchedule">
+                                <div class="status-indicator" :class="isOpenNow(event) ? 'open' : 'closed'"
+                                    role="status">
+                                    <span class="status-dot" aria-hidden="true"></span>
+                                    {{ isOpenNow(event) ? 'Open Now' : 'Closed Now' }}
+                                </div>
+
+                                <div class="time-slots">
+                                    <div v-for="(slot, index) in event.todaySchedule" :key="index" class="time-slot">
+                                        <span class="time-icon" aria-hidden="true">🕐</span>
+                                        <span>{{ slot.start }} - {{ slot.end }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div v-else class="closed-message">
+                                Closed {{ dayName }}
+                            </div>
+
+                            <a :href="event.url || '#'" class="event-link" target="_blank" rel="noopener noreferrer"
+                                :aria-label="'Visit ' + event.name + ' website'">
+                                <span>{{ event.url ? 'Book / View Info' : 'Link Coming Soon' }}</span>
+                                <span class="link-icon" aria-hidden="true">→</span>
+                            </a>
+                        </article>
+                    </div>
+
+                    <div v-else class="no-events">
+                        <div class="no-events-icon" aria-hidden="true">😴</div>
+                        <p class="no-events-text">No events available {{ dayName }}</p>
+                    </div>
+                </div>
+
+                <!-- Day Timeline View -->
+                <div v-else-if="viewMode === 'day'" class="timeline-container">
+                    <div class="timeline">
+                        <div v-for="hour in timelineHours" :key="hour" class="timeline-hour">
+                            <div class="hour-label">{{ hour }}:00</div>
+                            <div class="hour-marker"></div>
+                            <div class="timeline-events">
+                                <div v-for="event in getEventsAtHour(hour)" :key="event.name + hour"
+                                    class="timeline-event" :class="event.category" @click="openEventLink(event.url)">
+                                    <div class="timeline-event-name">{{ event.name }}</div>
+                                    <div class="timeline-event-time">{{ event.displayTime }}</div>
+                                    <span class="timeline-event-category" :class="event.category">
+                                        {{ event.category === 'toddler' ? 'Toddler' : 'Adult' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Week Timeline View -->
+                <div v-else-if="viewMode === 'week'" class="week-timeline-container">
+                    <div class="week-grid">
+                        <div v-for="(day, index) in weekDays" :key="index" 
+                             class="week-day-column"
+                             :class="showAdultEvents ? 'adult' : 'toddler'">
+                            <div class="week-day-header" :class="{ today: day.isToday }">
+                                {{ day.name }}
+                            </div>
+                            <div v-if="day.events.length > 0">
+                                <div v-for="event in day.events" :key="event.name + day.date"
+                                     class="week-event-item"
+                                     :class="event.category"
+                                     @click="openEventLink(event.url)">
+                                    <div class="week-event-name">{{ event.name }}</div>
+                                    <div v-for="(slot, slotIndex) in event.schedule" :key="slotIndex" class="week-event-time">
+                                        {{ slot.start }} - {{ slot.end }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="week-no-events">
+                                No events
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <p>💜 Made with love for Co Down families</p>
+                <p>Times shown in UK timezone • Last updated {{ lastUpdated }}</p>
+            </footer>
         </div>
-
-        <div v-else class="no-events">
-          <div class="no-events-icon" aria-hidden="true">😴</div>
-          <p class="no-events-text">No events available {{ dayName }}</p>
-        </div>
-      </main>
-
-      <footer>
-        <p>💜 Made with love for Co Down families</p>
-        <p>Times shown in UK timezone • Last updated {{ lastUpdated }}</p>
-      </footer>
     </div>
-  </div>
 
-  <script type="module">
-    import { createApp, ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+    <script type="module">
+        import { createApp, ref, computed, onMounted, onUnmounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
 
-    createApp({
-      setup() {
-        // Events data - ADD NEW EVENTS HERE
-        const events = [
-          {
-            name: 'Newry Leisure Swimming (Learner Pool)',
-            url: '', // Add URL later
-            category: 'toddler',
-            schedule: [
-              { days: [1, 5], times: [{ start: '09:30', end: '21:00' }] }, // Mon, Fri
-              { days: [3], times: [{ start: '09:30', end: '14:00' }, { start: '15:00', end: '21:00' }] }, // Wed
-              { days: [2, 4], times: [{ start: '09:30', end: '21:00' }] }, // Tue, Thu
-              { days: [6], times: [{ start: '09:00', end: '16:00' }] }, // Sat
-              { days: [0], times: [{ start: '13:00', end: '17:00' }] }  // Sun
-            ]
-          },
-          {
-            name: 'Newry Soft Play',
-            url: '', // Add URL later
-            category: 'toddler',
-            schedule: [
-              { days: [1, 2, 3, 4], times: [{ start: '09:00', end: '20:00' }] }, // Mon-Thu
-              { days: [5], times: [{ start: '09:00', end: '15:30' }, { start: '17:30', end: '20:00' }] }, // Fri
-              { days: [6], times: [{ start: '09:00', end: '11:00' }, { start: '15:00', end: '17:00' }] }, // Sat
-              { days: [0], times: [{ start: '10:00', end: '13:00' }, { start: '15:00', end: '17:00' }] }  // Sun
-            ]
-          },
-          {
-            name: 'Tiddly Town Newry',
-            url: '', // Add URL later
-            category: 'toddler',
-            schedule: [
-              { days: [1, 3, 4, 5, 6, 0], times: [
-                { start: '10:00', end: '11:30' },
-                { start: '12:15', end: '13:45' },
-                { start: '14:30', end: '16:00' }
-              ]}
-            ]
-          },
-          {
-            name: 'Cheeky Monkeys (Sheepbridge)',
-            url: '', // Add URL later
-            category: 'toddler',
-            schedule: [
-              { days: [4], times: [{ start: '10:00', end: '18:00' }] }, // Thu (6pm-8pm private)
-              { days: [5], times: [{ start: '10:00', end: '19:30' }] }, // Fri
-              { days: [6, 0], times: [{ start: '11:00', end: '18:30' }] }  // Sat, Sun
-            ]
-          },
-          {
-            name: 'Cheeky Monkeys Parent & Toddler',
-            url: '', // Add URL later
-            category: 'toddler',
-            schedule: [
-              { days: [4, 5], times: [{ start: '10:00', end: '11:30' }] } // Thu, Fri mornings
-            ]
-          },
-          {
-            name: 'Infinity Adventure Park (Toddler Mornings)',
-            url: 'https://infinityadventure.co.uk/astronaut-academy-adventure-park/',
-            category: 'toddler',
-            schedule: [
-              { days: [2], times: [{ start: '10:00', end: '12:00' }] }, // Tue
-              { days: [5], times: [{ start: '10:00', end: '12:00' }] }, // Fri
-              { days: [6], times: [{ start: '10:00', end: '11:00' }] }, // Sat
-              { days: [0], times: [{ start: '11:00', end: '12:00' }] }  // Sun
-            ]
-          },
-          {
-            name: 'Newry Health Suite',
-            url: 'https://www.newrymournedown.org/newry-leisure-centre-cecil-street',
-            category: 'adult',
-            schedule: [
-              { days: [1, 5], times: [{ start: '06:30', end: '21:00' }] }, // Mon, Fri
-              { days: [3], times: [{ start: '06:30', end: '14:00' }, { start: '15:00', end: '21:00' }] }, // Wed
-              { days: [2, 4], times: [{ start: '10:30', end: '21:00' }] }, // Tue, Thu
-              { days: [6], times: [{ start: '09:00', end: '16:00' }] }, // Sat
-              { days: [0], times: [{ start: '13:00', end: '17:00' }] }  // Sun
-            ]
-          }
-        ]
+        createApp({
+            setup() {
+                // Events data - ADD NEW EVENTS HERE
+                const events = [
+                    {
+                        name: 'Newry Leisure Swimming (Learner Pool)',
+                        url: 'https://www.newrymournedown.org/newry-leisure-centre-cecil-street',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [1, 5], times: [{ start: '09:30', end: '21:00' }] }, // Mon, Fri
+                            { days: [3], times: [{ start: '09:30', end: '14:00' }, { start: '15:00', end: '21:00' }] }, // Wed
+                            { days: [2, 4], times: [{ start: '09:30', end: '21:00' }] }, // Tue, Thu
+                            { days: [6], times: [{ start: '09:00', end: '16:00' }] }, // Sat
+                            { days: [0], times: [{ start: '13:00', end: '17:00' }] }  // Sun
+                        ]
+                    },
+                    {
+                        name: 'Newry Soft Play',
+                        url: 'https://www.newrymournedown.org/newry-leisure-centre-cecil-street',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [1, 2, 3, 4], times: [{ start: '09:00', end: '20:00' }] }, // Mon-Thu
+                            { days: [5], times: [{ start: '09:00', end: '15:30' }, { start: '17:30', end: '20:00' }] }, // Fri
+                            { days: [6], times: [{ start: '09:00', end: '11:00' }, { start: '15:00', end: '17:00' }] }, // Sat
+                            { days: [0], times: [{ start: '10:00', end: '13:00' }, { start: '15:00', end: '17:00' }] }  // Sun
+                        ]
+                    },
+                    {
+                        name: 'Tiddly Town Newry',
+                        url: 'https://tiddlytown.com/book-a-time-slot/',
+                        category: 'toddler',
+                        schedule: [
+                            {
+                                days: [1, 3, 4, 5, 6, 0], times: [
+                                    { start: '10:00', end: '11:30' },
+                                    { start: '12:15', end: '13:45' },
+                                    { start: '14:30', end: '16:00' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Cheeky Monkeys (Sheepbridge)',
+                        url: 'https://www.sheepbridgefec.com/cheeky-monkeys/',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [4], times: [{ start: '10:00', end: '18:00' }] }, // Thu (6pm-8pm private)
+                            { days: [5], times: [{ start: '10:00', end: '19:30' }] }, // Fri
+                            { days: [6, 0], times: [{ start: '11:00', end: '18:30' }] }  // Sat, Sun
+                        ]
+                    },
+                    {
+                        name: 'Cheeky Monkeys Parent & Toddler',
+                        url: 'https://www.sheepbridgefec.com/cheeky-monkeys/',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [4, 5], times: [{ start: '10:00', end: '11:30' }] } // Thu, Fri mornings
+                        ]
+                    },
+                    {
+                        name: 'Infinity Adventure Park (Toddler Mornings)',
+                        url: 'https://infinityadventure.co.uk/astronaut-academy-adventure-park/',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [2], times: [{ start: '10:00', end: '12:00' }] }, // Tue
+                            { days: [5], times: [{ start: '10:00', end: '12:00' }] }, // Fri
+                            { days: [6], times: [{ start: '10:00', end: '11:00' }] }, // Sat
+                            { days: [0], times: [{ start: '11:00', end: '12:00' }] }  // Sun
+                        ]
+                    },
+                    {
+                        name: 'Newry Health Suite',
+                        url: 'https://www.newrymournedown.org/newry-leisure-centre-cecil-street',
+                        category: 'adult',
+                        schedule: [
+                            { days: [1, 5], times: [{ start: '06:30', end: '21:00' }] }, // Mon, Fri
+                            { days: [3], times: [{ start: '06:30', end: '14:00' }, { start: '15:00', end: '21:00' }] }, // Wed
+                            { days: [2, 4], times: [{ start: '10:30', end: '21:00' }] }, // Tue, Thu
+                            { days: [6], times: [{ start: '09:00', end: '16:00' }] }, // Sat
+                            { days: [0], times: [{ start: '13:00', end: '17:00' }] }  // Sun
+                        ]
+                    }
+                ]
 
-        // Reactive state
-        const currentDate = ref(new Date())
-        const showAllEvents = ref(false)
-        const now = ref(new Date())
-        let intervalId = null
+                // Reactive state
+                const currentDate = ref(new Date())
+                const showAdultEvents = ref(false)
+                const viewMode = ref('cards') // 'cards', 'day', or 'week'
+                const now = ref(new Date())
+                let intervalId = null
 
-        // Load filter preference from localStorage
-        onMounted(() => {
-          const saved = localStorage.getItem('showAllEvents')
-          if (saved !== null) {
-            showAllEvents.value = JSON.parse(saved)
-          }
-          
-          // Update current time every minute for live open/closed status
-          intervalId = setInterval(() => {
-            now.value = new Date()
-          }, 60000)
-        })
+                // Load filter preferences from localStorage
+                onMounted(() => {
+                    const savedCategory = localStorage.getItem('showAdultEvents')
+                    if (savedCategory !== null) {
+                        showAdultEvents.value = JSON.parse(savedCategory)
+                    }
 
-        onUnmounted(() => {
-          if (intervalId) clearInterval(intervalId)
-        })
+                    const savedView = localStorage.getItem('viewMode')
+                    if (savedView !== null) {
+                        viewMode.value = savedView
+                    }
 
-        // Watch filter changes and save to localStorage
-        const unwatchFilter = computed(() => {
-          localStorage.setItem('showAllEvents', JSON.stringify(showAllEvents.value))
-          return showAllEvents.value
-        })
+                    // Update current time every minute for live open/closed status
+                    intervalId = setInterval(() => {
+                        now.value = new Date()
+                    }, 60000)
+                })
 
-        // Get UK timezone date string
-        const getUKDateString = (date) => {
-          return date.toLocaleDateString('en-GB', { 
-            timeZone: 'Europe/London',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          })
-        }
+                onUnmounted(() => {
+                    if (intervalId) clearInterval(intervalId)
+                })
 
-        // Check if selected date is today in UK timezone
-        const isToday = computed(() => {
-          const todayUK = getUKDateString(new Date())
-          const selectedUK = getUKDateString(currentDate.value)
-          return todayUK === selectedUK
-        })
+                // Watch filter changes and save to localStorage
+                const unwatchCategoryFilter = computed(() => {
+                    localStorage.setItem('showAdultEvents', JSON.stringify(showAdultEvents.value))
+                    return showAdultEvents.value
+                })
 
-        // Format displayed date
-        const formattedDate = computed(() => {
-          return currentDate.value.toLocaleDateString('en-GB', {
-            timeZone: 'Europe/London',
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })
-        })
+                const unwatchViewFilter = computed(() => {
+                    localStorage.setItem('viewMode', viewMode.value)
+                    return viewMode.value
+                })
 
-        // Get day name for messages
-        const dayName = computed(() => {
-          return currentDate.value.toLocaleDateString('en-GB', {
-            timeZone: 'Europe/London',
-            weekday: 'long'
-          })
-        })
+                // Get UK timezone date string
+                const getUKDateString = (date) => {
+                    return date.toLocaleDateString('en-GB', {
+                        timeZone: 'Europe/London',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    })
+                }
 
-        // Get day of week (0 = Sunday, 6 = Saturday)
-        const currentDayOfWeek = computed(() => {
-          // Create date string in UK timezone and parse to get correct day
-          const ukDateStr = currentDate.value.toLocaleDateString('en-GB', {
-            timeZone: 'Europe/London'
-          })
-          const [day, month, year] = ukDateStr.split('/')
-          const ukDate = new Date(year, month - 1, day)
-          return ukDate.getDay()
-        })
+                // Check if selected date is today in UK timezone
+                const isToday = computed(() => {
+                    const todayUK = getUKDateString(new Date())
+                    const selectedUK = getUKDateString(currentDate.value)
+                    return todayUK === selectedUK
+                })
 
-        // Get today's schedule for an event
-        const getTodaySchedule = (event) => {
-          const dayOfWeek = currentDayOfWeek.value
-          for (const schedule of event.schedule) {
-            if (schedule.days.includes(dayOfWeek)) {
-              return schedule.times
+                // Format displayed date
+                const formattedDate = computed(() => {
+                    return currentDate.value.toLocaleDateString('en-GB', {
+                        timeZone: 'Europe/London',
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
+                })
+
+                // Get day name for messages
+                const dayName = computed(() => {
+                    return currentDate.value.toLocaleDateString('en-GB', {
+                        timeZone: 'Europe/London',
+                        weekday: 'long'
+                    })
+                })
+
+                // Get day of week (0 = Sunday, 6 = Saturday)
+                const currentDayOfWeek = computed(() => {
+                    // Create date string in UK timezone and parse to get correct day
+                    const ukDateStr = currentDate.value.toLocaleDateString('en-GB', {
+                        timeZone: 'Europe/London'
+                    })
+                    const [day, month, year] = ukDateStr.split('/')
+                    const ukDate = new Date(year, month - 1, day)
+                    return ukDate.getDay()
+                })
+
+                // Get today's schedule for an event
+                const getTodaySchedule = (event) => {
+                    const dayOfWeek = currentDayOfWeek.value
+                    for (const schedule of event.schedule) {
+                        if (schedule.days.includes(dayOfWeek)) {
+                            return schedule.times
+                        }
+                    }
+                    return null
+                }
+
+                // Check if event is open now
+                const isOpenNow = (event) => {
+                    if (!isToday.value || !event.todaySchedule) return false
+
+                    const nowUK = new Date().toLocaleString('en-GB', {
+                        timeZone: 'Europe/London',
+                        hour12: false
+                    })
+
+                    // Extract time portion (HH:mm)
+                    const timeMatch = nowUK.match(/(\d{2}):(\d{2})/)
+                    if (!timeMatch) return false
+
+                    const currentMinutes = parseInt(timeMatch[1]) * 60 + parseInt(timeMatch[2])
+
+                    for (const slot of event.todaySchedule) {
+                        const [startHour, startMin] = slot.start.split(':').map(Number)
+                        const [endHour, endMin] = slot.end.split(':').map(Number)
+                        const startMinutes = startHour * 60 + startMin
+                        const endMinutes = endHour * 60 + endMin
+
+                        if (currentMinutes >= startMinutes && currentMinutes < endMinutes) {
+                            return true
+                        }
+                    }
+
+                    return false
+                }
+
+                // Filter events based on category and current day
+                const filteredEvents = computed(() => {
+                    let filtered = events
+
+                    // Filter by category - show ONLY toddler OR adult
+                    const targetCategory = showAdultEvents.value ? 'adult' : 'toddler'
+                    filtered = filtered.filter(e => e.category === targetCategory)
+
+                    // Add today's schedule to each event
+                    return filtered.map(event => ({
+                        ...event,
+                        todaySchedule: getTodaySchedule(event)
+                    }))
+                })
+
+                // Navigation functions
+                const previousDay = () => {
+                    const newDate = new Date(currentDate.value)
+                    newDate.setDate(newDate.getDate() - 1)
+                    currentDate.value = newDate
+                }
+
+                const nextDay = () => {
+                    const newDate = new Date(currentDate.value)
+                    newDate.setDate(newDate.getDate() + 1)
+                    currentDate.value = newDate
+                }
+
+                const goToToday = () => {
+                    currentDate.value = new Date()
+                }
+
+                // Timeline view functions
+                const timelineHours = computed(() => {
+                    // Generate hours from 6 AM to 9 PM
+                    const hours = []
+                    for (let i = 6; i <= 21; i++) {
+                        hours.push(i)
+                    }
+                    return hours
+                })
+
+                const getEventsAtHour = (hour) => {
+                    const eventsAtHour = []
+
+                    for (const event of filteredEvents.value) {
+                        if (!event.todaySchedule) continue
+
+                        for (const slot of event.todaySchedule) {
+                            const [startHour, startMin] = slot.start.split(':').map(Number)
+                            const [endHour, endMin] = slot.end.split(':').map(Number)
+
+                            // Check if this hour falls within the event's time slot
+                            if (hour >= startHour && hour < endHour) {
+                                eventsAtHour.push({
+                                    ...event,
+                                    displayTime: `${slot.start} - ${slot.end}`
+                                })
+                                break // Only add event once per hour
+                            }
+                        }
+                    }
+
+                    return eventsAtHour
+                }
+
+                const openEventLink = (url) => {
+                    if (url && url !== '#') {
+                        window.open(url, '_blank', 'noopener,noreferrer')
+                    }
+                }
+
+                // Week view functions
+                const weekDays = computed(() => {
+                    const days = []
+                    const startOfWeek = new Date(currentDate.value)
+                    
+                    // Get the most recent Monday (or current day if it's Monday)
+                    const dayOfWeek = startOfWeek.getDay()
+                    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+                    startOfWeek.setDate(startOfWeek.getDate() + diff)
+                    
+                    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                    const todayUK = getUKDateString(new Date())
+                    
+                    for (let i = 0; i < 7; i++) {
+                        const date = new Date(startOfWeek)
+                        date.setDate(startOfWeek.getDate() + i)
+                        
+                        const dateStr = getUKDateString(date)
+                        const isToday = dateStr === todayUK
+                        
+                        // Get day of week (0 = Sunday, 6 = Saturday)
+                        const ukDateStr = date.toLocaleDateString('en-GB', {
+                            timeZone: 'Europe/London'
+                        })
+                        const [day, month, year] = ukDateStr.split('/')
+                        const ukDate = new Date(year, month - 1, day)
+                        const dayOfWeek = ukDate.getDay()
+                        
+                        // Filter events for this day
+                        const targetCategory = showAdultEvents.value ? 'adult' : 'toddler'
+                        const dayEvents = events
+                            .filter(e => e.category === targetCategory)
+                            .map(event => {
+                                // Check if event runs on this day
+                                for (const schedule of event.schedule) {
+                                    if (schedule.days.includes(dayOfWeek)) {
+                                        return {
+                                            ...event,
+                                            schedule: schedule.times
+                                        }
+                                    }
+                                }
+                                return null
+                            })
+                            .filter(e => e !== null)
+                        
+                        days.push({
+                            name: dayNames[i],
+                            date: dateStr,
+                            isToday: isToday,
+                            events: dayEvents
+                        })
+                    }
+                    
+                    return days
+                })
+
+                // Last updated date
+                const lastUpdated = 'February 2026'
+
+                return {
+                    currentDate,
+                    showAdultEvents,
+                    viewMode,
+                    formattedDate,
+                    dayName,
+                    isToday,
+                    filteredEvents,
+                    previousDay,
+                    nextDay,
+                    goToToday,
+                    isOpenNow,
+                    timelineHours,
+                    getEventsAtHour,
+                    weekDays,
+                    openEventLink,
+                    lastUpdated
+                }
             }
-          }
-          return null
-        }
-
-        // Check if event is open now
-        const isOpenNow = (event) => {
-          if (!isToday.value || !event.todaySchedule) return false
-
-          const nowUK = new Date().toLocaleString('en-GB', {
-            timeZone: 'Europe/London',
-            hour12: false
-          })
-          
-          // Extract time portion (HH:mm)
-          const timeMatch = nowUK.match(/(\d{2}):(\d{2})/)
-          if (!timeMatch) return false
-          
-          const currentMinutes = parseInt(timeMatch[1]) * 60 + parseInt(timeMatch[2])
-
-          for (const slot of event.todaySchedule) {
-            const [startHour, startMin] = slot.start.split(':').map(Number)
-            const [endHour, endMin] = slot.end.split(':').map(Number)
-            const startMinutes = startHour * 60 + startMin
-            const endMinutes = endHour * 60 + endMin
-
-            if (currentMinutes >= startMinutes && currentMinutes < endMinutes) {
-              return true
-            }
-          }
-          
-          return false
-        }
-
-        // Filter events based on category and current day
-        const filteredEvents = computed(() => {
-          let filtered = events
-
-          // Filter by category
-          if (!showAllEvents.value) {
-            filtered = filtered.filter(e => e.category === 'toddler')
-          }
-
-          // Add today's schedule to each event
-          return filtered.map(event => ({
-            ...event,
-            todaySchedule: getTodaySchedule(event)
-          }))
-        })
-
-        // Navigation functions
-        const previousDay = () => {
-          const newDate = new Date(currentDate.value)
-          newDate.setDate(newDate.getDate() - 1)
-          currentDate.value = newDate
-        }
-
-        const nextDay = () => {
-          const newDate = new Date(currentDate.value)
-          newDate.setDate(newDate.getDate() + 1)
-          currentDate.value = newDate
-        }
-
-        const goToToday = () => {
-          currentDate.value = new Date()
-        }
-
-        // Last updated date
-        const lastUpdated = 'February 2026'
-
-        return {
-          currentDate,
-          showAllEvents,
-          formattedDate,
-          dayName,
-          isToday,
-          filteredEvents,
-          previousDay,
-          nextDay,
-          goToToday,
-          isOpenNow,
-          lastUpdated
-        }
-      }
-    }).mount('#app')
-  </script>
+        }).mount('#app')
+    </script>
 </body>
+
 </html>
