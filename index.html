@@ -16,6 +16,10 @@
             box-sizing: border-box;
         }
 
+        [v-cloak] {
+            display: none;
+        }
+
         :root {
             --toddler-bg: linear-gradient(135deg, #ffa3d7 0%, #c490e4 100%);
             --toddler-accent: #ffd1e3;
@@ -720,8 +724,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -739,8 +748,15 @@
         }
 
         @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-header {
@@ -1394,7 +1410,7 @@
 
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div id="app">
+    <div id="app" v-cloak>
         <header>
             <h1>🎈 Co Down Toddler Events</h1>
             <p class="subtitle">Your guide to fun activities around County Down. Inspired by O.</p>
@@ -1490,7 +1506,8 @@
                                     <span>{{ event.url ? 'Book / View Info' : 'Link Coming Soon' }}</span>
                                     <span class="link-icon" aria-hidden="true">→</span>
                                 </a>
-                                <button class="info-button" @click="openModal(event)" :aria-label="'View weekly schedule for ' + event.name">
+                                <button class="info-button" @click="openModal(event)"
+                                    :aria-label="'View weekly schedule for ' + event.name">
                                     ℹ️
                                 </button>
                             </div>
@@ -1561,7 +1578,7 @@
                             ✕
                         </button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <div class="modal-week-schedule">
                             <div v-for="day in modalWeekSchedule" :key="day.name" class="modal-day-item">
@@ -1580,13 +1597,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="modal-footer">
-                        <a v-if="selectedEvent.url && selectedEvent.url !== '#'" 
-                           :href="selectedEvent.url" 
-                           class="modal-link-btn" 
-                           target="_blank" 
-                           rel="noopener noreferrer">
+                        <a v-if="selectedEvent.url && selectedEvent.url !== '#'" :href="selectedEvent.url"
+                            class="modal-link-btn" target="_blank" rel="noopener noreferrer">
                             Book / View Info →
                         </a>
                     </div>
@@ -1934,7 +1948,7 @@
 
                     for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
                         const dayName = dayNames[dayIndex]
-                        
+
                         // Check if we're looking at today
                         const checkDate = new Date()
                         const dayDiff = dayIndex - checkDate.getDay()
