@@ -25,6 +25,8 @@
             --toddler-accent: #ffd1e3;
             --adult-bg: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
             --adult-accent: #b8f3d8;
+            --food-bg: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            --food-accent: #fde68a;
             --open-color: #10b981;
             --closed-color: #f472b6;
             --bg-light: linear-gradient(180deg, #e3f2ff 0%, #fce7f3 50%, #e9d5ff 100%);
@@ -488,6 +490,11 @@
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 252, 231, 0.7) 100%);
         }
 
+        .event-card.food {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 243, 199, 0.7) 100%);
+        }
+
         .event-card::before {
             content: '';
             position: absolute;
@@ -504,6 +511,10 @@
 
         .event-card.adult::before {
             background: var(--adult-bg);
+        }
+
+        .event-card.food::before {
+            background: var(--food-bg);
         }
 
         .event-header {
@@ -546,6 +557,12 @@
             background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);
             color: #065f46;
             border-color: rgba(134, 239, 172, 0.4);
+        }
+
+        .category-badge.food {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            border-color: rgba(251, 191, 36, 0.4);
         }
 
         .badge-icon {
@@ -1008,6 +1025,11 @@
             background: linear-gradient(135deg, rgba(240, 255, 250, 0.95) 0%, rgba(180, 240, 215, 0.85) 100%);
         }
 
+        .timeline-event.food {
+            border-color: rgba(251, 191, 36, 0.7);
+            background: linear-gradient(135deg, rgba(255, 251, 235, 0.95) 0%, rgba(254, 215, 170, 0.85) 100%);
+        }
+
         .timeline-event:hover {
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
@@ -1062,6 +1084,11 @@
 
         .timeline-event-category.adult {
             background: linear-gradient(135deg, #00d98a 0%, #88d8b0 100%);
+            color: white;
+        }
+
+        .timeline-event-category.food {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             color: white;
         }
 
@@ -1124,6 +1151,11 @@
             background: linear-gradient(180deg, rgba(220, 252, 231, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
         }
 
+        .week-day-column.food {
+            border-color: rgba(251, 191, 36, 0.4);
+            background: linear-gradient(180deg, rgba(254, 243, 199, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+        }
+
         .week-day-header {
             font-weight: 700;
             font-size: 1.1rem;
@@ -1171,6 +1203,10 @@
 
         .week-event-item.adult {
             border-color: rgba(168, 230, 207, 0.5);
+        }
+
+        .week-event-item.food {
+            border-color: rgba(251, 191, 36, 0.5);
         }
 
         .week-event-item:hover {
@@ -1420,12 +1456,20 @@
             <!-- Filter Toggles -->
             <section class="filter-section" aria-label="Event filter">
                 <span class="filter-label">Category:</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" v-model="showAdultEvents"
-                        aria-label="Toggle between toddler and adult events">
-                    <span class="slider"></span>
-                </label>
-                <span class="filter-mode">{{ showAdultEvents ? '👨‍👩‍👧 Adult' : '👶 Toddler' }}</span>
+                <div class="view-selector">
+                    <button @click="categoryFilter = 'toddler'"
+                        :class="['view-btn', { active: categoryFilter === 'toddler' }]" aria-label="Toddler events">
+                        👶 Toddler
+                    </button>
+                    <button @click="categoryFilter = 'adult'"
+                        :class="['view-btn', { active: categoryFilter === 'adult' }]" aria-label="Adult events">
+                        👨‍👩‍👧 Adult
+                    </button>
+                    <button @click="categoryFilter = 'food'"
+                        :class="['view-btn', { active: categoryFilter === 'food' }]" aria-label="Food venues">
+                        🍕 Food
+                    </button>
+                </div>
             </section>
 
             <section class="filter-section" aria-label="View mode">
@@ -1476,8 +1520,9 @@
                                 <h2 class="event-name">{{ event.name }}</h2>
                                 <span class="category-badge" :class="event.category">
                                     <span class="badge-icon" aria-hidden="true">{{ event.category === 'toddler' ? '👶' :
-                                        '👨‍👩‍👧' }}</span>
-                                    <span>{{ event.category === 'toddler' ? 'Toddler' : 'Adult' }}</span>
+                                        event.category === 'adult' ? '👨‍👩‍👧' : '🍕' }}</span>
+                                    <span>{{ event.category === 'toddler' ? 'Toddler' : event.category === 'adult' ?
+                                        'Adult' : 'Food' }}</span>
                                 </span>
                             </div>
 
@@ -1534,7 +1579,8 @@
                                     <div class="timeline-event-name">{{ event.name }}</div>
                                     <div class="timeline-event-time">{{ event.displayTime }}</div>
                                     <span class="timeline-event-category" :class="event.category">
-                                        {{ event.category === 'toddler' ? 'Toddler' : 'Adult' }}
+                                        {{ event.category === 'toddler' ? 'Toddler' : event.category === 'adult' ?
+                                        'Adult' : 'Food' }}
                                     </span>
                                     <div class="timeline-expand-hint">ℹ️</div>
                                 </div>
@@ -1547,7 +1593,7 @@
                 <div v-else-if="viewMode === 'week'" class="week-timeline-container">
                     <div class="week-grid">
                         <div v-for="(day, index) in weekDays" :key="index" class="week-day-column"
-                            :class="showAdultEvents ? 'adult' : 'toddler'">
+                            :class="categoryFilter">
                             <div class="week-day-header" :class="{ today: day.isToday }">
                                 {{ day.name }}
                             </div>
@@ -1710,12 +1756,65 @@
                             { days: [6], times: [{ start: '09:00', end: '16:00' }] }, // Sat
                             { days: [0], times: [{ start: '13:00', end: '17:00' }] }  // Sun
                         ]
+                    },
+                    {
+                        name: 'Warrenpoint Library',
+                        url: 'https://www.librariesni.org.uk/libraries/county-down/warrenpoint-library/',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [1], times: [{ start: '10:00', end: '17:00' }] }, // Mon
+                            { days: [2], times: [{ start: '10:00', end: '17:00' }] }, // Tue
+                            { days: [3], times: [{ start: '13:00', end: '20:00' }] }, // Wed
+                            { days: [4], times: [{ start: '10:00', end: '17:00' }] }, // Thu
+                            { days: [5], times: [{ start: '10:00', end: '16:00' }] }, // Fri
+                            { days: [6], times: [{ start: '10:00', end: '16:00' }] }  // Sat
+                        ]
+                    },
+                    {
+                        name: 'Kent Amusements (Warrenpoint)',
+                        url: '#',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [5], times: [{ start: '14:00', end: '21:00' }] }, // Fri
+                            { days: [6], times: [{ start: '12:00', end: '21:00' }] }, // Sat
+                            { days: [0], times: [{ start: '12:00', end: '20:00' }] }  // Sun
+                        ]
+                    },
+                    {
+                        name: 'The Imaginarium (Newry)',
+                        url: 'https://www.facebook.com/people/The-Imaginarium-Centre/100090347499194/?locale=en_GB',
+                        category: 'toddler',
+                        schedule: [
+                            { days: [3, 4, 5, 6], times: [{ start: '10:00', end: '17:00' }] } // Wed-Sat
+                        ]
+                    },
+                    {
+                        name: 'Rostrevor Inn',
+                        url: 'https://therostrevorinn.com/rostrevor-inn-dining/',
+                        category: 'food',
+                        schedule: [
+                            { days: [1, 2], times: [{ start: '09:00', end: '11:00' }] }, // Mon, Tue
+                            { days: [3], times: [{ start: '09:00', end: '11:00' }, { start: '17:30', end: '21:00' }] }, // Wed
+                            { days: [4, 5, 6], times: [{ start: '09:00', end: '11:00' }, { start: '12:30', end: '15:00' }, { start: '17:30', end: '21:00' }] }, // Thu, Fri, Sat
+                            { days: [0], times: [{ start: '09:00', end: '20:00' }] }  // Sun
+                        ]
+                    },
+                    {
+                        name: 'The Shack',
+                        url: 'https://shackpizza.touchtakeaway.net/menu',
+                        category: 'food',
+                        schedule: [
+                            { days: [4], times: [{ start: '15:00', end: '20:00' }] }, // Thu
+                            { days: [5], times: [{ start: '15:00', end: '21:30' }] }, // Fri
+                            { days: [6], times: [{ start: '13:00', end: '21:00' }] }, // Sat
+                            { days: [0], times: [{ start: '13:00', end: '20:00' }] }  // Sun
+                        ]
                     }
                 ]
 
                 // Reactive state
                 const currentDate = ref(new Date())
-                const showAdultEvents = ref(false)
+                const categoryFilter = ref('toddler') // 'toddler', 'adult', or 'food'
                 const viewMode = ref('cards') // 'cards', 'day', or 'week'
                 const now = ref(new Date())
                 const expandedEventId = ref(null)
@@ -1724,9 +1823,9 @@
 
                 // Load filter preferences from localStorage
                 onMounted(() => {
-                    const savedCategory = localStorage.getItem('showAdultEvents')
+                    const savedCategory = localStorage.getItem('categoryFilter')
                     if (savedCategory !== null) {
-                        showAdultEvents.value = JSON.parse(savedCategory)
+                        categoryFilter.value = savedCategory
                     }
 
                     const savedView = localStorage.getItem('viewMode')
@@ -1745,9 +1844,9 @@
                 })
 
                 // Watch filter changes and save to localStorage
-                const unwatchCategoryFilter = computed(() => {
-                    localStorage.setItem('showAdultEvents', JSON.stringify(showAdultEvents.value))
-                    return showAdultEvents.value
+                const unwatchCategoryFilterStorage = computed(() => {
+                    localStorage.setItem('categoryFilter', categoryFilter.value)
+                    return categoryFilter.value
                 })
 
                 const unwatchViewFilter = computed(() => {
@@ -1846,9 +1945,8 @@
                 const filteredEvents = computed(() => {
                     let filtered = events
 
-                    // Filter by category - show ONLY toddler OR adult
-                    const targetCategory = showAdultEvents.value ? 'adult' : 'toddler'
-                    filtered = filtered.filter(e => e.category === targetCategory)
+                    // Filter by category
+                    filtered = filtered.filter(e => e.category === categoryFilter.value)
 
                     // Add today's schedule to each event
                     return filtered.map(event => ({
@@ -2002,9 +2100,8 @@
                         const dayOfWeek = ukDate.getDay()
 
                         // Filter events for this day
-                        const targetCategory = showAdultEvents.value ? 'adult' : 'toddler'
                         const dayEvents = events
-                            .filter(e => e.category === targetCategory)
+                            .filter(e => e.category === categoryFilter.value)
                             .map(event => {
                                 // Check if event runs on this day
                                 for (const schedule of event.schedule) {
@@ -2035,7 +2132,7 @@
 
                 return {
                     currentDate,
-                    showAdultEvents,
+                    categoryFilter,
                     viewMode,
                     expandedEventId,
                     selectedEvent,
