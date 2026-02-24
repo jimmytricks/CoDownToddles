@@ -1,20 +1,6 @@
-# Co Down Events
+# Eerz what's on
 
-Events viewer for children's activities around County Down, Northern Ireland.
-
-## Features
-
-- Day-by-day navigation
-- UK timezone (Europe/London) with automatic BST/GMT handling
-- Toggle between toddler and adult events
-- Three view modes: Cards, Day Timeline, Week Timeline
-- Day timeline shows only current hour onwards (filters past times)
-- Events stack horizontally in day view - tap to expand details
-- Live open/closed status
-- Psychedelic In the Night Garden themed design
-- Floating animated characters (Makka Pakka-inspired, Tittifers, butterflies)
-- Mobile responsive
-- Preferences saved in browser
+[eerz.com](https://eerz.com) - Events viewer for children's activities around Newry, County Down. 
 
 ## Adding Events
 
@@ -41,39 +27,9 @@ For split hours:
 ]}
 ```
 
-## Current Events
-
-Toddler Events:
-- Newry Leisure Swimming (Learner Pool)
-- Newry Soft Play
-- Tiddly Town Newry
-- Cheeky Monkeys (Sheepbridge)
-- Cheeky Monkeys Parent & Toddler
-- Infinity Adventure Park (Toddler Mornings)
-
-Adult Events:
-- Newry Health Suite
-- General Swimming
-
 ## Tech
 
 - Vue.js 3 (CDN)
 - CSS Grid (mobile-first)
 - localStorage for preferences
 - Intl.DateTimeFormat for timezone
-
-## Deployment
-
-Works on GitHub Pages. Push to a public repo, enable Pages in Settings.
-
-Site will be at: `https://username.github.io/repo-name/`
-
-## Customization
-
-Colors are in CSS variables at line 17:
-```css
-:root {
-  --toddler-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-  --adult-bg: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
-}
-```
